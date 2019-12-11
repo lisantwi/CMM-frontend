@@ -10,7 +10,9 @@ const MyContext = React.createContext();
         this.state = {
             todos: [],
             user: JSON.parse(localStorage.getItem("user")) || {},
-            token: localStorage.getItem("token") || ""
+            token: localStorage.getItem("token") || "",
+            clients:[],
+            options: {}
         }
     }
 
@@ -25,6 +27,32 @@ const MyContext = React.createContext();
     //             return response;
     //         })
     // }
+
+    getClients = () => {
+        fetch('http://localhost:3000/api/v1/customers',{
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        .then(resp => resp.json())
+        .then(customers => {
+            this.setState({
+                clients: customers
+            })
+
+            const options = this.state.clients.map(c=>{
+                return {
+                    key: c.id,
+                    text:c.company,
+                    value: c.company
+                }
+            })
+            this.setState({
+                options:options
+            })
+        })  
+      
+    }
 
     // addTodo = (newTodo) => {
     //     return todoAxios.post("/api/todo/", newTodo)
@@ -120,7 +148,7 @@ const MyContext = React.createContext();
        
 
       } else{
-         alert("This username is already associated with an account")
+         alert("Incorrect username or password")
       }
       this.props.history.push('/projects')
       
@@ -146,7 +174,7 @@ const MyContext = React.createContext();
         return (
             <MyContext.Provider
                 value={{
-                    getTodos: this.getTodos,
+                    getClients: this.getClients,
                     addTodo: this.addTodo,
                     editTodo: this.editTodo,
                     deleteTodo: this.deleteTodo,

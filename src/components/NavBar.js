@@ -135,6 +135,7 @@ class NavBar extends React.Component{
           
           <div className="nav-links">
             <Link to='/login'>Login/Register</Link>
+            <Link to='/projects'>My Projects</Link>
             <button onClick={() => this.props.logout()}>Logout</button>
             {/* <a href="http://stackoverflow.com/users/4084003/" target="_blank">Stackoverflow</a>
             <a href="https://in.linkedin.com/in/jonesvinothjoseph" target="_blank">LinkedIn</a>
