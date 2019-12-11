@@ -3,8 +3,8 @@ import NavBar from './components/NavBar'
 import Login from './components/Login'
 import Signup from './components/Signup'
 import Projects from './components/Projects'
-import { Route, BrowserRouter, Switch} from "react-router-dom";
-import MyProvider from './provider/MyProvider'
+import { Route,Switch, withRouter, Redirect} from "react-router-dom";
+
 
 
 
@@ -19,22 +19,22 @@ class App extends React.Component{
 
  render(){
   return(
-    <div>
 
-      <NavBar/>
-      <MyProvider >
-      <BrowserRouter>
-      <Switch>
-        <Route path='/login'
-        render ={(props) => <Login {...props} propsHere={true}/>}/>
-        <Route path='/signup'
-        render ={(props) => <Signup {...props} propsHere={true}/>}/>
-        <Route path='/projects' component={Projects}/>
-      </Switch>
+<div>
 
-      </BrowserRouter>
-      </MyProvider>
-    </div>
+<NavBar history={this.props.history}/>
+  <Switch>
+  <Route path='/login'
+  render ={(props) => <Login {...props} history={this.props.history}/>}/>
+  <Route path='/signup'
+  render ={(props) => <Signup {...props} propsHere={true}/>}/>
+   <Route path='/projects'
+  render ={(props) => localStorage.token ?  <Projects {...props}/> :  <Redirect push to='/home'/>}/>
+  </Switch>
+
+</div>
+     
+    
   )
  }
    
@@ -43,4 +43,4 @@ class App extends React.Component{
   
 
 
-export default App;
+export default withRouter(App);

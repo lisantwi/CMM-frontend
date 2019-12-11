@@ -1,5 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
+import { withContext } from '../MyContext'
+import { Link } from 'react-router-dom'
 
 
 const Nav = styled.div`
@@ -132,7 +134,8 @@ class NavBar extends React.Component{
           </div>
           
           <div className="nav-links">
-            <a href="/login" >Login/Register</a>
+            <Link to='/login'>Login/Register</Link>
+            <button onClick={() => this.props.logout()}>Logout</button>
             {/* <a href="http://stackoverflow.com/users/4084003/" target="_blank">Stackoverflow</a>
             <a href="https://in.linkedin.com/in/jonesvinothjoseph" target="_blank">LinkedIn</a>
             <a href="https://codepen.io/jo_Geek/" target="_blank">Codepen</a>
@@ -150,4 +153,4 @@ class NavBar extends React.Component{
     }
 }
 
-export default NavBar
+export default withContext(NavBar)
