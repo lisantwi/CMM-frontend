@@ -1,6 +1,7 @@
 
 import React, { Component } from "react";
 import {withRouter} from 'react-router-dom'
+import { Persist } from 'react-persist'
 const MyContext = React.createContext();
 
 
@@ -12,12 +13,38 @@ const MyContext = React.createContext();
             user: JSON.parse(localStorage.getItem("user")) || {},
             token: localStorage.getItem("token") || "",
             clients:[],
-            options: {}
+            options: {},
+            projects: JSON.parse(localStorage.getItem("projects")) || []
         }
     }
 
     componentDidMount() {
         
+    }
+
+    addProject = (projectInfo) => {
+        fetch('http://localhost:3000/api/v1/projects', {
+            headers: {
+                Authorization:  `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        .then(resp => resp.json())
+        .then()
+
+    }
+
+    fetchProjects = () => {
+        fetch('http://localhost:3000/api/v1/projects', {
+            headers: {
+                Authorization:  `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        .then(resp => resp.json())
+        .then(data =>{
+            localStorage.setItem("projects", JSON.stringify(data))
+        })
+       
+     
     }
 
     // getTodos = () => {
@@ -118,8 +145,14 @@ const MyContext = React.createContext();
                alert("Signup Unsuccessful")
             }
 
+            this.fetchProjects()
+            
+
            
-        })
+        }
+           
+        )
+     
       
     }
 
@@ -151,14 +184,18 @@ const MyContext = React.createContext();
          alert("Incorrect username or password")
       }
       this.props.history.push('/projects')
+
+      this.fetchProjects()
       
   })
+
   
     }
 
     logout = () => {
         localStorage.removeItem("user");
         localStorage.removeItem("token");
+        localStorage.removeItem("projects");
         this.setState({
             todos: [],
             user: {},
@@ -175,7 +212,7 @@ const MyContext = React.createContext();
             <MyContext.Provider
                 value={{
                     getClients: this.getClients,
-                    addTodo: this.addTodo,
+                    fetchProjects: this.fetchProjects,
                     editTodo: this.editTodo,
                     deleteTodo: this.deleteTodo,
                     signup: this.signup,
@@ -184,6 +221,12 @@ const MyContext = React.createContext();
                     ...this.state
                 }}
             >
+                    <Persist 
+          name="projects" 
+          data={this.state.projects} 
+          debounce={500} 
+          onMount={data => this.setState(data)}
+        />
 
                 {this.props.children}
 

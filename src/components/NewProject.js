@@ -7,7 +7,6 @@ class NewProject extends React.Component{
     constructor(){
         super()
         this.state = {
-            options: {},
             customer:'',
             project_name:''
         }
@@ -20,6 +19,7 @@ class NewProject extends React.Component{
        
     }
 
+   
 
 
   handleChange = (e) => {
@@ -29,15 +29,16 @@ class NewProject extends React.Component{
     })
 }
 
+handleDropdownChange = (e, { value }) => this.setState({ customer: value })
+
 
 handleSubmit =(e) =>{
     e.preventDefault()
     this.props.addProject(this.state)
   }
 
-  getOptions = () => {
-
-  }
+  
+  
 
     render(){
         const {customer, project_name} = this.state
@@ -50,7 +51,7 @@ handleSubmit =(e) =>{
                 <Header>Project Info</Header>
                 <Form size='large'>
                 <Form.Group stackable widths={1}>
-                    <Form.Dropdown fluid selection options={this.props.options} onChange={this.handleChange} label='Client'  name='customer' placeholder='Client Name' />
+                    <Form.Dropdown fluid selection options={this.props.options} onChange={this.handleDropdownChange} label='Client'  name='customer' placeholder='Client Name' value={customer}/>
                     <Form.Input onChange={this.handleChange} label='Project Name' value={project_name} name='project_name'  placeholder='Project Name' />
                 </Form.Group>
 

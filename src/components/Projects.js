@@ -1,7 +1,8 @@
 import React from 'react'
 import NewCustomer from './NewCustomer'
 import NewProject from './NewProject'
-import {Grid, Menu} from 'semantic-ui-react'
+import { withContext } from '../MyContext'
+import {Grid, Card, Icon} from 'semantic-ui-react'
 import styled from 'styled-components'
 
 const CustomerDiv = styled.div`
@@ -37,6 +38,10 @@ body {
     background-color: #555;
     color: white;
   }
+
+  .card{
+    margin-top: 30px;
+  }
 `
 
 
@@ -53,7 +58,7 @@ class Projects extends React.Component{
                       
      
                 <Grid className='grid' textAlign='center' columns={3} style={{height: '100vh', width:'100vw'}}>
-                <Grid.Row  >
+ 
                     <Grid.Column width={5} >
                     <ul>
   <li><a class="active" href="#home">Projects</a></li>
@@ -62,9 +67,26 @@ class Projects extends React.Component{
 </ul>
                     </Grid.Column>
                     <Grid.Column width={11}   >
-                        <NewProject/>
+                      <Grid.Row height={4}>
+
+                      <NewProject/>
+                      </Grid.Row>
+
+                      <Grid.Row height={12}>
+                    <div className='card'>
+                          {this.props.projects.map(p=>   <Card className='card'>
+    <Card.Content header={p.project_name} />
+    <Card.Content description='Client Name' />
+    <Card.Content extra>
+      <Icon name='user' />4 Users Working
+    </Card.Content>
+  </Card> )}
+  </div>
+                      </Grid.Row>
+                    
+                       
                     </Grid.Column>
-                    </Grid.Row>
+              
                 </Grid>
                
                 </CustomerDiv>
@@ -73,4 +95,4 @@ class Projects extends React.Component{
     }
 }
 
-export default Projects
+export default withContext(Projects)
